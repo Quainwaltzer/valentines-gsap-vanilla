@@ -1,0 +1,214 @@
+*, *::before, *::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none;
+}
+
+html, body{
+    background-color: #151515;
+    height: 100%;
+    width: 100%;
+}
+
+footer {
+    font-family: "Google Sans Code", sans-serif;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.05); 
+
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100dvw;
+    z-index: 100;
+}
+.info{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.center-elements{
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+    width: 100dvw;
+    position: absolute;
+    z-index: 2;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.3'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+    z-index: 100;
+}
+
+.love-elements{
+    font-family: 'Lexend', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.love-text span {
+  display: inline-block; /* important for GSAP transform to work */
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:42px;
+  height: 40px;
+  pointer-events: none;          /* so it doesn’t block clicks */
+  background-image: url('img/heart.png');
+  background-size: cover;
+  transform: translate(-50%, -50%); /* center on mouse */
+  z-index: 9999;
+}
+
+body{
+    cursor: none;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ff4d6d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.5s ease-in-out;
+}
+
+.btn:hover{
+    cursor: none;
+    background: #6c1e2c;
+}
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.yes{
+    transition: all 0.5s ease;
+}
+
+.no{
+    transition: all 0.5s ease; /* Makes the movement smooth */
+    padding: 10px 20px;
+    white-space: nowrap;
+    text-wrap: nowrap;
+}
+
+.no-wrapper{
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    transition: all 0.5s ease;
+}
+
+.parallax-container {
+  position: relative;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+  pointer-events: none;
+  perspective: 1000px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-layer{
+    position: absolute;
+    aspect-ratio: 1/1;
+    z-index: 10; 
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #454549;
+    padding: 10px;
+    width: var(--size);
+    height: var(--size);
+}
+
+.grays{
+    background-color: #454549; 
+}
+
+.outlines{
+    background-color: transparent;
+    border: 2px solid #454549;
+}
+
+.layer1 {
+    top: 20px;
+    left: 13vw;    
+    --size: 5vw;
+}
+
+.layer2 {
+  top: 20px;
+  left: 20px;
+  --size: 10vw;
+}
+
+.layer3{
+  top: 20px;
+  left: 30vw;
+  --size: 7vw;
+}
+
+.layer4{
+    top: 80vh;
+    left: 20vw;
+    --size: 8vw;
+}
+
+.layer5{
+    top: 0;
+    right:0;
+    --size: 6vw;
+}
+
+.layer9{
+    top: 70vh;
+    left: 70vw;
+    border-radius: 15px;
+    --size: 3vw;
+}
+
+.layer10{
+    top: 50vh;
+    left: 50vw;
+    --size: 5vw;
+}
+.parallax-container img{
+    height: 100%;
+    width: 100%;    
+    object-fit: cover;
+    border-radius: 10px;
+}
