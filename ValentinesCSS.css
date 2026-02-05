@@ -9,6 +9,16 @@ html, body{
     background-color: #151515;
     height: 100%;
     width: 100%;
+    overflow: hidden;
+}
+
+model-viewer::part(default-progress-bar) {
+    display: none;
+}
+
+/* Also removes the "poster" (the white/gray flash before it loads) */
+model-viewer::part(default-poster) {
+    display: none;
 }
 
 footer {
@@ -18,20 +28,23 @@ footer {
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     background-color: rgba(255, 255, 255, 0.05); 
-
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    
     box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100dvw;
+    height: 10dvh;
     z-index: 100;
 }
 .info{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 20px;
+    height: 100%;
+    width: 100%;
+    font-size: 22px;
 }
 
 .center-elements{
@@ -43,6 +56,7 @@ footer {
     width: 100dvw;
     position: absolute;
     z-index: 2;
+      box-shadow: inset 0px 0px 100px 100px rgba(0, 0, 0, 0.8);
 }
 
 body::before {
@@ -56,7 +70,7 @@ body::before {
 }
 
 .love-elements{
-    font-family: 'Lexend', sans-serif;
+    font-family: 'Playfair Display', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -65,9 +79,57 @@ body::before {
 }
 
 .love-text span {
-  display: inline-block; /* important for GSAP transform to work */
+  display: inline-block;
 }
 
+.red {
+    position: relative;
+    display: inline-block;
+    padding: 0 4px;
+    z-index: 1;
+    color: white;
+    --bg-width: 0%; 
+}
+
+.red::before {
+    content: "";
+    position: absolute;
+    top: 10%;
+    left: 0;
+    width: var(--bg-width); 
+    height: 85%;
+    background-color: #ff4d6d;
+    z-index: -1;
+    border-radius: 4px;
+    transform: rotate(-1deg);
+    transform-origin: left; 
+}
+.hearts-and-asking{
+    display: flex;
+}
+
+.lower-part{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.first-ask{
+    font-size: 50px;
+}
+
+.hearts{
+    position: relative;
+}
+
+.heart{
+    width: 30vw; /* Adjust width as needed */
+    height: 30vw; /* Adjust height as needed */
+    display: block; /* Ensures it behaves like a block element for proper sizing */
+    margin: 0 auto; /* Centers the viewer on the page */
+    
+}
 .custom-cursor {
   position: fixed;
   top: 0;
@@ -83,6 +145,9 @@ body::before {
 
 body{
     cursor: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn {
@@ -95,6 +160,8 @@ body{
   text-decoration: none;
   font-weight: bold;
   transition: background-color 0.5s ease-in-out;
+  font-size: 30px;
+  font-family: 'Lexend', sans-serif;
 }
 
 .btn:hover{
@@ -110,14 +177,20 @@ body{
 }
 
 .yes{
-    transition: all 0.5s ease;
+    box-shadow: 0 0 50px 20px rgba(255, 77, 109, 0.6);
 }
 
 .no{
-    transition: all 0.5s ease; /* Makes the movement smooth */
+    transition: all 0.5s ease;
+    background-color: #6c1e2c;
     padding: 10px 20px;
     white-space: nowrap;
     text-wrap: nowrap;
+    box-shadow: 0 0 50px 20px rgb(52, 12, 12);
+}
+
+.no:hover{
+    background-color: #151515;
 }
 
 .no-wrapper{
@@ -164,16 +237,16 @@ body{
     border: 2px solid #454549;
 }
 
-.layer1 {
-    top: 20px;
-    left: 13vw;    
-    --size: 5vw;
+.layer1{
+    top: 5vh;
+    right:3vw;
+    --size: 6vw;
 }
 
 .layer2 {
   top: 20px;
   left: 20px;
-  --size: 10vw;
+  --size: 6vw;
 }
 
 .layer3{
@@ -188,10 +261,35 @@ body{
     --size: 8vw;
 }
 
-.layer5{
-    top: 0;
-    right:0;
+.layer5 {
+    top: 50vh;
+    right: 20vw;    
+    --size: 8vw;
+    z-index: 50;
+}
+
+.layer6 {
+    top: 80vh;
+    right: 10vw;    
+    --size: 4vw;
+    z-index: 50;
+    background-color: #2c2c2f; 
+}
+
+.layer7 {
+    top: 70vh;
+    left: 40vw;    
     --size: 6vw;
+    z-index: 50;
+    background-color: #2c2c2f; 
+}
+
+.layer8 {
+    top: 30vh;
+    right: 7vw;    
+    --size: 8vw;
+    z-index: 50;
+    background-color: #2c2c2f; 
 }
 
 .layer9{
@@ -206,9 +304,38 @@ body{
     left: 50vw;
     --size: 5vw;
 }
+
+.layer11{
+    top: 10vh;
+    right: 30vw;
+    border-radius: 15px;
+    --size: 3.3vw;
+}
+
+.layer12{
+    bottom: 20vh;
+    left: 10vw;
+    border-radius: 15px;
+    --size: 4.4vw;
+}
+
+.layer13{
+    top: 30vh;
+    left: 15vw;
+    border-radius: 15px;
+    --size: 3.7vw;
+}
+
+.layer14{
+    top: 5vh;
+    left: 50vw;
+    border-radius: 15px;
+    --size: 3.7vw;
+}
 .parallax-container img{
     height: 100%;
     width: 100%;    
     object-fit: cover;
     border-radius: 10px;
+    filter: grayscale(0.8);
 }

@@ -1,21 +1,39 @@
-const text = document.querySelector(".love-text");
-text.innerHTML = text.textContent.replace(/\S/g, "<span>$&</span>");
+const loveTexts = document.querySelectorAll(".love-text");
 
-gsap.from(".love-text span", {
-  y: 10,         // start 50px below
-  opacity: 0,    // start invisible
-  duration: 0.5,
-  stagger: .1,  // each letter starts 0.1s after the previous
-  ease: "back.out(1.7)"
+loveTexts.forEach((el) => {
+    let newHTML = "";
+
+    el.childNodes.forEach((node) => {
+        if (node.nodeType === Node.TEXT_NODE) {
+
+            newHTML += node.textContent.replace(/\S/g, "<span>$&</span>");
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+
+            const innerText = node.textContent.replace(/\S/g, "<span>$&</span>");
+
+            newHTML += `<span class="${node.className}">${innerText}</span>`;
+        }
+    });
+
+    el.innerHTML = newHTML;
 });
 
-gsap.to(text, {
-  scale: 1.1,
-  repeat: -1,
-  yoyo: true,
-  duration: 1,
-  ease: "power2.inOut"
+const tl = gsap.timeline();
+
+tl.from(".love-text span", {
+    y: 10,
+    opacity: 0,
+    duration: 0.5,
+    stagger: 0.05,
+    ease: "back.out(1.7)"
 });
+
+
+tl.to(".red", {
+    "--bg-width": "100%", 
+    duration: 0.8,
+    ease: "expo.out"
+}, "-=0.2");
 const cursor = document.querySelector('.custom-cursor');
 
 document.addEventListener('mousemove', e => {
@@ -41,18 +59,20 @@ buttons.forEach(btn => {
 const layers = gsap.utils.toArray('.bg-layer');
 
 document.addEventListener('mousemove', e => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 5; // -1 to 1
-  const y = (e.clientY / window.innerHeight - 0.5) * 5; // -1 to 1
+    const x = (e.clientX / window.innerWidth - 0.5);
+    const y = (e.clientY / window.innerHeight - 0.5);
 
-  layers.forEach((layer, i) => {
-    const speed = (i + 1) * 10; // layer speed multiplier
-    gsap.to(layer, {
-      x: x * speed,
-      y: y * speed,
-      duration: 2,
-      ease: "power2.out"
+    layers.forEach((layer) => {
+        const speed = parseFloat(layer.getAttribute('data-speed')) || 1;
+
+        gsap.to(layer, {
+            x: x * speed * 50, 
+            y: y * speed * 50,
+            duration: 1.5,
+            ease: "power2.out",
+            overwrite: "auto"
+        });
     });
-  });
 });
 
 const noButton = document.querySelector(".no");
@@ -70,17 +90,18 @@ noButton.addEventListener("click", (e) => {
     noButton.innerHTML = words[click];
 
     const endWidth = noButton.scrollWidth;
-
-    // 4. Animate the wrapper to that specific pixel value
-    // This makes the 'Yes' button slide over gracefully
     noWrapper.style.width = `${endWidth}px`;
 
     const buttonWidth = noButton.offsetWidth;
     const buttonHeight = noButton.offsetHeight;
 
+    const footerHeight = window.innerHeight * 0.1; 
+    const availableHeight = window.innerHeight - footerHeight;
+
     const margin = 20;
+
     const targetX = Math.random() * (window.innerWidth - buttonWidth - margin * 2) + margin;
-    const targetY = Math.random() * (window.innerHeight - buttonHeight - margin * 2) + margin;
+    const targetY = Math.random() * (availableHeight - buttonHeight - margin * 2) + margin;
 
     const moveX = targetX - originX;
     const moveY = targetY - originY;
@@ -90,31 +111,39 @@ noButton.addEventListener("click", (e) => {
     if (click < words.length - 1) click++;
 });
 
-// const noButton = document.querySelector(".no");
-// let click = 0;
+const model = document.querySelector(".heart");
 
-// noButton.addEventListener("click", (e) => {
-//     e.preventDefault();
-    
-//     if (noButton.style.position !== 'absolute') {
-//         noButton.style.position = 'absolute';
-//     }
 
-//     const words = ["Why?", "Sure ka na ba dyan?", "Hays bat ayaw mo :(("];
-//     noButton.innerHTML = words[click];
+gsap.to(model, {
+  scale: 1.1,
+  repeat: -1,
+  yoyo: true,
+  duration: 1,
+  ease: "power2.inOut"
+});
 
-  
-//     const buttonWidth = noButton.offsetWidth;
-//     const buttonHeight = noButton.offsetHeight;
+// We create a proxy object to hold the raw numbers
+const rotationProxy = { x: 0, y: 0, z: 0 };
 
-   
-//     const margin = 20;
-//     const targetX = Math.random() * (window.innerWidth - buttonWidth - margin * 2) + margin;
-//     const targetY = Math.random() * (window.innerHeight - buttonHeight - margin * 2) + margin;
+document.addEventListener("mousemove", (e) => {
+    const normX = (e.clientX / window.innerWidth) - 0.5; // -0.5 to 0.5
+    const normY = (e.clientY / window.innerHeight) - 0.5; // -0.5 to 0.5
 
-//     noButton.style.left = `${targetX}px`;
-//     noButton.style.top = `${targetY}px`;
-//     noButton.style.transform = "none"; 
-
-//     if (click < words.length - 1) click++;
-// });
+    gsap.to(rotationProxy, {
+        // Mapping based on your manual coordinates:
+        // Horizontal (normX) drives the LAST value (X)
+        // Vertical (normY) drives the MIDDLE value (Y)
+        x: normX * 60,   // 0.5 * 60 = 30
+        y: normY * 60,   // -0.5 * 60 = -30
+        z: 0,            // You requested 0deg for Z
+        duration: 0.8,
+        ease: "power2.out",
+        overwrite: "auto",
+        onUpdate: () => {
+            // String format: "Zdeg Ydeg Xdeg"
+            model.setAttribute("orientation", 
+                `${rotationProxy.z}deg ${rotationProxy.y}deg ${rotationProxy.x}deg`
+            );
+        }
+    });
+});
