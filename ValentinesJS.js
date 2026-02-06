@@ -1,6 +1,10 @@
 gsap.registerPlugin(ScrollTrigger);
 
 window.addEventListener('load', () => {
+
+    const bgMusic = document.getElementById("bg-music");
+    bgMusic.volume = 0; // Start silent for an elegant fade
+
     const tl = gsap.timeline();
 
     // 1. Simulate progress bar filling (Visual polish)
@@ -13,6 +17,16 @@ window.addEventListener('load', () => {
     .to("#loader", {
         opacity: 0,
         duration: 1,
+        nStart: () => {
+            // Attempt to play music as the loader fades
+            bgMusic.play().then(() => {
+                // Fade volume from 0 to 0.5 over 3 seconds
+                gsap.to(bgMusic, { volume: 0.3, duration: 3 });
+            }).catch(error => {
+                console.log("Autoplay blocked. It will play on the first click.");
+                // Fallback: It will play when she clicks 'Yes' later
+            });
+        },
         onComplete: () => {
             document.getElementById("loader").style.display = "none";
             // Optional: Start your initial heart tilt/float animation here
@@ -243,6 +257,43 @@ yesButton.addEventListener("click", () => {
         onStart: () => {
         startCarousel(); // This starts the image sliding logic
         popupSig();
+
+        const celebrationColors = ['#FFD700', '#FFFFFF', '#FFDF00']; // Gold and White
+
+confetti({
+    particleCount: 150,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: celebrationColors,
+    zIndex: 3000 // Ensure it's above the final message
+});
+
+const duration = 3 * 1000;
+const end = Date.now() + duration;
+
+(function frame() {
+    confetti({
+        particleCount: 3, // Increased slightly for visibility
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.7 }, // Adjusted Y so they shoot from the sides
+        colors: celebrationColors,
+        zIndex: 3000
+    });
+    confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.7 },
+        colors: celebrationColors,
+        zIndex: 3000
+    });
+
+    if (Date.now() < end) {
+        requestAnimationFrame(frame);
+    }
+}());
+
         // Quick background ambient hearts
         for (let i = 0; i < 15; i++) {
             const heart = document.createElement('div');
