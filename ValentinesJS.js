@@ -17,7 +17,7 @@ window.addEventListener('load', () => {
     .to("#loader", {
         opacity: 0,
         duration: 1,
-        nStart: () => {
+        onStart: () => {
             // Attempt to play music as the loader fades
             bgMusic.play().then(() => {
                 // Fade volume from 0 to 0.5 over 3 seconds
